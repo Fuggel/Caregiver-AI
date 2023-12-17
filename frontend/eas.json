@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 5.9.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://caregiver-ai-server.onrender.com/api"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Caregiver-AI",
-    "slug": "Caregiver-AI",
-    "version": "1.0.0",
+    "name": "Caregiver AI",
+    "slug": "caregiverAi",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/brain-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/brain.gif",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,16 +15,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.1",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fuggel.caregiverAi"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/brain-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fuggel.caregiverAi"
     },
     "web": {
       "favicon": "./assets/brain-favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e041aa39-2921-4e2d-939a-2d7139fa8a59"
+      }
+    },
+    "owner": "fuggel"
   }
 }

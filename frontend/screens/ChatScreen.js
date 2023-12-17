@@ -16,7 +16,6 @@ import {
 import { useChatContext } from "../context/ChatContext";
 import TypeWriter from "react-native-typewriter";
 import axios from "axios";
-import { API_URL } from "@env";
 import Input from "../components/Input";
 import useErrorToast from "../hooks/useError";
 
@@ -39,7 +38,10 @@ const ChatScreen = () => {
       setUserInput("");
       setError(null);
 
-      const response = await axios.post(`${API_URL}/question`, { userInput });
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/question`,
+        { userInput }
+      );
 
       updateChatHistory(response.data.chatHistory);
       setAnimatedIndex(response.data.chatHistory.length - 1);
@@ -52,7 +54,7 @@ const ChatScreen = () => {
 
   const handleDeleteChat = async () => {
     try {
-      await axios.delete(`${API_URL}/delete-chat`);
+      await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/delete-chat`);
       updateChatHistory([]);
       setError(null);
     } catch (error) {
@@ -97,7 +99,7 @@ const ChatScreen = () => {
                 color={message.role === "system" ? "#FF2E63" : "#0766AD"}
               />
               <Text style={styles.roleText}>
-                {message.role === "system" ? "Caregiver-AI" : "Sie"}
+                {message.role === "system" ? "Caregiver AI" : "Sie"}
               </Text>
             </View>
             {message.role === "system" && i === animatedIndex ? (
