@@ -13,10 +13,14 @@
       },
       "ios": {
         "simulator": true
-      },
-      "distribution": "internal"
+      }
     },
     "production": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://caregiver-ai-server.onrender.com/api"
+      }
+    },
+    "test": {
       "env": {
         "EXPO_PUBLIC_API_URL": "https://caregiver-ai-server.onrender.com/api"
       }
