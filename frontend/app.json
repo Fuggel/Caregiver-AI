@@ -2,7 +2,7 @@
   "expo": {
     "name": "Caregiver AI",
     "slug": "caregiverAi",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/brain-icon.png",
     "userInterfaceStyle": "light",
@@ -15,7 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "supportsTablet": true,
       "bundleIdentifier": "com.fuggel.caregiverAi"
     },
