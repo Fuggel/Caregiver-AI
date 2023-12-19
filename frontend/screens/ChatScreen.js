@@ -17,16 +17,15 @@ import { useChatContext } from "../context/ChatContext";
 import TypeWriter from "react-native-typewriter";
 import axios from "axios";
 import Input from "../components/Input";
-import useErrorToast from "../hooks/useError";
+import { useAuth } from "../context/AuthContext";
+import { showToast } from "../utils/toast";
 
-const ChatScreen = () => {
+const ChatScreen = ({ navigation }) => {
   const { chatHistory, updateChatHistory } = useChatContext();
   const [userInput, setUserInput] = useState("");
-  const [error, setError] = useState(null);
   const [animatedIndex, setAnimatedIndex] = useState(-1);
   const scrollViewRef = useRef();
-
-  useErrorToast(error);
+  const { token, logout } = useAuth();
 
   const handleSendRequest = async () => {
     try {
@@ -36,30 +35,57 @@ const ChatScreen = () => {
 
       updateChatHistory([...chatHistory, { role: "user", content: userInput }]);
       setUserInput("");
-      setError(null);
 
       const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/question`,
-        { userInput }
+        `http://192.168.178.33:3001/api/question`,
+        {
+          userInput,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       updateChatHistory(response.data.chatHistory);
       setAnimatedIndex(response.data.chatHistory.length - 1);
     } catch (error) {
+      if (error.response?.status === 401) {
+        logout();
+        return navigation.navigate("Home");
+      }
+
       console.log(error);
-      setError(error);
+      showToast(
+        "error",
+        "Es ist ein unerwarteter Fehler aufgetreten...",
+        error
+      );
       setUserInput("");
     }
   };
 
   const handleDeleteChat = async () => {
     try {
-      await axios.delete(`${process.env.EXPO_PUBLIC_API_URL}/delete-chat`);
+      await axios.delete(`http://192.168.178.33:3001/api/delete-chat`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       updateChatHistory([]);
-      setError(null);
     } catch (error) {
+      if (error.response?.status === 401) {
+        logout();
+        return navigation.navigate("Home");
+      }
+
       console.log(error);
-      setError(error);
+      showToast(
+        "error",
+        "Es ist ein unerwarteter Fehler aufgetreten...",
+        error
+      );
     }
   };
 
