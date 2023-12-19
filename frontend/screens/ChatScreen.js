@@ -19,6 +19,7 @@ import axios from "axios";
 import Input from "../components/Input";
 import { useAuth } from "../context/AuthContext";
 import { showToast } from "../utils/toast";
+import { API_URL } from "../constants/apiConstants";
 
 const ChatScreen = ({ navigation }) => {
   const { chatHistory, updateChatHistory } = useChatContext();
@@ -37,7 +38,7 @@ const ChatScreen = ({ navigation }) => {
       setUserInput("");
 
       const response = await axios.post(
-        `http://192.168.178.33:3001/api/question`,
+        `${API_URL}/question`,
         {
           userInput,
         },
@@ -68,7 +69,7 @@ const ChatScreen = ({ navigation }) => {
 
   const handleDeleteChat = async () => {
     try {
-      await axios.delete(`http://192.168.178.33:3001/api/delete-chat`, {
+      await axios.delete(`${API_URL}/delete-chat`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -6,6 +6,7 @@ import { useState } from "react";
 import DismissKeyboard from "../components/DismissKeyboard";
 import { useAuth } from "../context/AuthContext";
 import { showToast } from "../utils/toast";
+import { API_URL } from "../constants/apiConstants";
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -18,13 +19,10 @@ const LoginScreen = ({ navigation }) => {
         return showToast("error", "Bitte geben Sie Username und Passwort ein.");
       }
 
-      const response = await axios.post(
-        `http://192.168.178.33:3001/api/login`,
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/login`, {
+        username,
+        password,
+      });
 
       login(response.data.token);
       setUsername("");
