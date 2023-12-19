@@ -13,7 +13,7 @@ const login = (req, res) => {
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       res.json({
-        token: jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" }),
+        token: jwt.sign({ username }, SECRET_KEY, { expiresIn: "3h" }),
       });
     } else {
       res.status(401).json({ error: "Invalid credentials." });
