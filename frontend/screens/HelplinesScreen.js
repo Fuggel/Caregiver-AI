@@ -19,7 +19,7 @@ const HelplinesScreen = () => {
 
           <TouchableOpacity
             style={styles.contactWrapper}
-            onPress={() => Linking.openURL(`tel:${contact.phoneNumber}`)}
+            onPress={() => Linking.openURL(`tel://${contact.phoneNumber}`)}
           >
             <Feather name="phone-call" size={20} color="#007AFF" />
             <Text style={styles.contactNumber}>{contact.phoneNumber}</Text>
