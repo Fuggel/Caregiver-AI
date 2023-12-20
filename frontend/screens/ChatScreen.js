@@ -17,7 +17,6 @@ import { useChatContext } from "../context/ChatContext";
 import TypeWriter from "react-native-typewriter";
 import axios from "axios";
 import Input from "../components/Input";
-import { useAuth } from "../context/AuthContext";
 import { showToast } from "../utils/toast";
 import { API_URL } from "../constants/apiConstants";
 
@@ -26,7 +25,6 @@ const ChatScreen = ({ navigation }) => {
   const [userInput, setUserInput] = useState("");
   const [animatedIndex, setAnimatedIndex] = useState(-1);
   const scrollViewRef = useRef();
-  const { token, logout } = useAuth();
 
   const handleSendRequest = async () => {
     try {
@@ -37,17 +35,9 @@ const ChatScreen = ({ navigation }) => {
       updateChatHistory([...chatHistory, { role: "user", content: userInput }]);
       setUserInput("");
 
-      const response = await axios.post(
-        `${API_URL}/question`,
-        {
-          userInput,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/question`, {
+        userInput,
+      });
 
       updateChatHistory(response.data.chatHistory);
       setAnimatedIndex(response.data.chatHistory.length - 1);
@@ -55,6 +45,14 @@ const ChatScreen = ({ navigation }) => {
       if (error.response?.status === 401) {
         logout();
         return navigation.navigate("Home");
+      } else if (error.response?.status === 423) {
+        showToast(
+          "error",
+          "Der Chat ist vorübergehend nicht verfügbar.",
+          "Bitte nutzen Sie die Notfallnummern für weitere Hilfe.",
+          5000
+        );
+        return;
       }
 
       console.log(error);
@@ -69,11 +67,7 @@ const ChatScreen = ({ navigation }) => {
 
   const handleDeleteChat = async () => {
     try {
-      await axios.delete(`${API_URL}/delete-chat`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(`${API_URL}/delete-chat`);
       updateChatHistory([]);
     } catch (error) {
       if (error.response?.status === 401) {
