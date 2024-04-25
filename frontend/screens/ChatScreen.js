@@ -17,6 +17,7 @@ import { useChatContext } from "../context/ChatContext";
 import TypeWriter from "react-native-typewriter";
 import axios from "axios";
 import Input from "../components/Input";
+import { useAuth } from "../context/AuthContext";
 import { showToast } from "../utils/toast";
 import { API_URL } from "../constants/apiConstants";
 
@@ -25,6 +26,7 @@ const ChatScreen = ({ navigation }) => {
   const [userInput, setUserInput] = useState("");
   const [animatedIndex, setAnimatedIndex] = useState(-1);
   const scrollViewRef = useRef();
+  const { token, logout } = useAuth();
 
   const handleSendRequest = async () => {
     try {
@@ -35,9 +37,14 @@ const ChatScreen = ({ navigation }) => {
       updateChatHistory([...chatHistory, { role: "user", content: userInput }]);
       setUserInput("");
 
-      const response = await axios.post(`${API_URL}/question`, {
-        userInput,
-      });
+      const response = await axios.post(`${API_URL}/question`,
+        { userInput },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       updateChatHistory(response.data.chatHistory);
       setAnimatedIndex(response.data.chatHistory.length - 1);
@@ -67,7 +74,11 @@ const ChatScreen = ({ navigation }) => {
 
   const handleDeleteChat = async () => {
     try {
-      await axios.delete(`${API_URL}/delete-chat`);
+      await axios.delete(`${API_URL}/delete-chat`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       updateChatHistory([]);
     } catch (error) {
       if (error.response?.status === 401) {
