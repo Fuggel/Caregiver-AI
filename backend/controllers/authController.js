@@ -7,7 +7,7 @@ const login = (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    if (username.trim().toLowerCase() === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       res.json({
         token: jwt.sign({ username }, SECRET_KEY, { expiresIn: "3h" }),
       });
